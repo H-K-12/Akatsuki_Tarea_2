@@ -1,8 +1,16 @@
+using MicroservicioProducto;
+using MicroservicioProducto.Repository;
+using MicroservicioProducto.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddOpenApi();
+
+// Inyección de Dependencias
+builder.Services.AddScoped<IProductoRepository, ProductoRepository>();
+builder.Services.AddScoped<IProductoService, ProductoService>(); 
 
 var app = builder.Build();
 
@@ -16,6 +24,6 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.MapControllers();
+app.MapProductoEndpoints();
 
 app.Run();

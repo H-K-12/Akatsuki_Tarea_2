@@ -1,3 +1,5 @@
 <Solution>
   <Project Path="MicroservicioProducto/MicroservicioProducto.csproj" />
+  <Project Path="MicroservicioPedido/MicroservicioPedido.csproj" />
+  <Project Path="APIGateway/APIGateway.csproj" />
 </Solution>
