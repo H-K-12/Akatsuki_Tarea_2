@@ -1,21 +1,32 @@
+using MicroservicioProducto;
+using MicroservicioProducto.Repository;
+using MicroservicioProducto.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
-builder.Services.AddOpenApi();
+builder.Services.AddAuthorization();
+
+// Inyección de Dependencias
+builder.Services.AddSingleton<IDBConnectionFactory, DBConnectionFactory>();
+builder.Services.AddScoped<IProductoRepository, ProductoRepository>();
+builder.Services.AddScoped<IProductoService, ProductoService>();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.MapControllers();
+app.MapProductoEndpoints();
 
 app.Run();
