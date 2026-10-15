@@ -12,12 +12,14 @@ builder.Services.AddHttpClient("Pedidos", client =>
     client.BaseAddress = new Uri(builder.Configuration["Services:Pedidos"]
         ?? throw new InvalidOperationException("No se configuró Services:Pedidos."));
     client.Timeout = TimeSpan.FromSeconds(10);
+    client.DefaultRequestHeaders.Add("X-Gateway", "Akatsuki-ApiGateway");
 });
 builder.Services.AddHttpClient("Productos", client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["Services:Productos"]
         ?? throw new InvalidOperationException("No se configuró Services:Productos."));
     client.Timeout = TimeSpan.FromSeconds(10);
+    client.DefaultRequestHeaders.Add("X-Gateway", "Akatsuki-ApiGateway");
 });
 builder.Services.AddScoped<ResumenOrdenService>();
 
@@ -40,6 +42,7 @@ app.Use(async (context, next) =>
 
     context.Request.Headers["X-Correlation-ID"] = correlationId;
     context.Response.Headers["X-Correlation-ID"] = correlationId;
+    context.Response.Headers["X-Gateway"] = "Akatsuki-ApiGateway";
 
     var logger = context.RequestServices.GetRequiredService<ILoggerFactory>()
         .CreateLogger("GatewayRequests");
